@@ -33,11 +33,7 @@ db.setup();
 ```
 
 ### insert(entries)
-<<<<<<< HEAD
 This function enables you to add new properties/entries to your locale database, with or without unique id ([idUsage](#Declaring-new-database)). Function insert() takes one parameter – object that can have infinite entries:
-=======
-This function enables you to add new properties/entries to your locale database, with or without unique id ([#ref.](#Declaring-new-database)). Function insert() takes one parameter – object that can have infinite entries:
->>>>>>> 5202be04a83e4298ed6aa8e807913f35ac603d89
 
 `entries: object` → Inserts to your local database passed entries as arguments.
 
