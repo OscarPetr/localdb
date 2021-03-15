@@ -1,6 +1,6 @@
 # **LocalDb**
 
-This is a local database that serves lots of different functionalities such as inserting objects of unlimited slots, removing objects, querying databases with arguments and much more. Local databases are made with the JSON structure, which means they are incredibly easy to use, insert, remove or query. #LocalDb
+This is a local database that serves lots of different functionalities such as inserting objects of unlimited slots, removing objects, querying databases with arguments and much more. Local databases are made with the JSON structure, which means they are incredibly easy to use, insert, remove or query. # LocalDb
 
 ## **Dependencies**
 For generating databases in local directory, the only dependency you need to include in your project is file system.
