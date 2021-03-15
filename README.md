@@ -26,7 +26,7 @@ const db = new Database(path, idUsage);
 ## **Functions**
 
 ### insert()
-This function enables you to add new properties to your locale database, with or without unique id [#LocalDb](#LocalDb).
+This function enables you to add new properties to your locale database, with or without unique id ([#ref](#Declaring_new_database)).
 
 ### get()
 
