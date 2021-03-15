@@ -1,14 +1,22 @@
 const fs = require('fs');
 const path = require('path');
-const generate = require('generate-unique-id');
+
+function generate(length: number): string {
+    var chars = 'qwertyuiopasdfghjklzxcvbnm';
+    var generation = '';
+    for(var i = 0; i < length; i++) {
+        generation += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return generation;
+}
 
 class Dababase {
     path: string;
-    idusage: boolean;
+    idUsage: boolean;
 
-    constructor(path: string, idusage: boolean) {
+    constructor(path: string, idUsage: boolean) {
         this.path = path;
-        this.idusage = idusage;
+        this.idUsage = idUsage;
     };
 
     setup() {
@@ -31,8 +39,8 @@ class Dababase {
         fs.readFile(source, (err, data) => {
             var obj = JSON.parse(data);
 
-            if (this.idusage) {
-                entries["_id"] = generate({ length: 8, useNumbers: false });
+            if (this.idUsage) {
+                entries["_id"] = generate(8);
             }
             obj.push(entries);
 
