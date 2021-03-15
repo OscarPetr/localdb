@@ -52,7 +52,7 @@ class Dababase {
         });
     };
 
-    get(entry: object, callback: (err: Error, query: object)) {
+    query(entry: object, callback: (err: Error, query: object)) {
         var source = `${process.cwd()}/${this.path}`;
         fs.readFile(source, (err, data) => {
             var obj = JSON.parse(data);
@@ -63,7 +63,7 @@ class Dababase {
         });
     };
 
-    getAll(entry: object, callback: (err: Error, query: object[])) {
+    queryAll(entry: object, callback: (err: Error, query: object[])) {
         var source = `${process.cwd()}/${this.path}`;
         fs.readFile(source, (err, data) => {
             var obj = JSON.parse(data);
