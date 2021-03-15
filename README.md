@@ -4,7 +4,7 @@ This is a local database that serves lots of different functionalities such as i
 
 ## **Declaring new database**
 First thing comes first, you need to require this package to your Node.js project and the class `Database` will automatically load to your import statement.
-```typescript
+```javascript
 const Database = require('localdb');
 ```
 After we required package localdb, we can finally declare our first database with the imported class `Database`. Declaring new database takes two parameters:
@@ -13,7 +13,7 @@ After we required package localdb, we can finally declare our first database wit
 
 `idUsage: boolean;` → Every insertion to your database, package will generate an unique id in the last slot of your row.
 
-```typescript
+```javascript
 const db = new Database(path, idUsage);
 ```
 
