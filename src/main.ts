@@ -78,10 +78,9 @@ class Dababase {
             var values = Object.values(entry)[0];
 
             var index = Array.from(obj).findIndex((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
-            obj.splice(index, index)
+            obj.splice(index, index);
 
             obj = JSON.stringify(obj);
-
             fs.writeFile(this.source, obj, (err: Error) => {
                 if (err) throw err;
             });
@@ -103,8 +102,8 @@ class Dababase {
             for (var i = 0; i < indecies.length; i++) {
                 obj.splice(indecies[i] - i, indecies[i] - i);
             }
-            obj = JSON.stringify(obj);
 
+            obj = JSON.stringify(obj);
             fs.writeFile(this.source, obj, (err: Error) => {
                 if (err) throw err;
             });
@@ -126,6 +125,7 @@ class Dababase {
                 var index = Array.from(obj).findIndex((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
                 obj[index] = query;
 
+                obj = JSON.stringify(obj);
                 fs.writeFile(this.source, obj, (err: Error) => {
                     if (err) throw err;
 
