@@ -2,6 +2,13 @@
 
 This is a local database that serves lots of different functionalities such as inserting objects of unlimited slots, removing objects, querying databases with arguments and much more. Local databases are made with the JSON structure, which means they are incredibly easy to use, insert, remove or query.
 
+## **Installation**
+For installing localdb npm package to your locale Node.js project, you need to open bash command line in your project directory and paste this command there:
+
+```bash
+npm install --save localdb
+```
+
 ## **Dependencies**
 For generating databases in local directory, the only dependency you need to include in your project is file system.
 ```bash
