@@ -1,32 +1,23 @@
 const fs = require('fs');
 const path = require('path');
 
-function generate(length: number): string {
-    var chars = 'qwertyuiopasdfghjklzxcvbnm';
-    var generation = '';
-    for(var i = 0; i < length; i++) {
-        generation += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return generation;
-}
-
 class Dababase {
-    path: string;
+    filepath: string;
     idUsage: boolean;
     source: string;
 
-    constructor(path: string, idUsage: boolean) {
-        this.path = path;
-        this.idUsage = idUsage;
-        this.source = `${process.cwd()}/${this.path}`;
+    constructor(options?: { filepath?: string, idUsage?: boolean }) {
+        this.filepath = options?.filepath || 'db.json';
+        this.idUsage = options?.idUsage || false;
+        this.source = `${process.cwd()}/${this.filepath}`;
     }
 
-    // SETUP METHOD
-    setup() {
+    // LOAD METHOD
+    load() {
         fs.readdir(path.dirname(this.source), 'utf-8', (err: Error, files: string[]) => {
             if (err) throw err;
 
-            if (files.includes(this.path)) {} else {
+            if (files.includes(this.filepath)) { } else {
                 fs.writeFile(this.source, '[]', (err: Error) => {
                     if (err) throw err;
                 });
@@ -35,23 +26,29 @@ class Dababase {
     }
 
     // INSERT METHOD
-    insert(entries: object) {
+    insert(entries: object, callback: (err: Error) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
+            if (err) throw err;
+
             var obj = JSON.parse(data);
 
-            if (this.idUsage) entries = {...entries, _id: generate(8) };
+            if (this.idUsage) entries = { ...entries, _id: generate(8) };
             obj.push(entries);
 
             obj = JSON.stringify(obj);
-            fs.writeFile(this.path, obj, (err: Error) => {
+            fs.writeFile(this.filepath, obj, (err: Error) => {
                 if (err) throw err;
+
+                callback(err);
             });
         });
     }
 
     // QUERY METHOD
-    query(entry: object, callback: (err: Error, query: any) => Error & any[]) {
+    query(entry: object, callback: (err: Error, query: any) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
+            if (err) throw err;
+
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
@@ -61,8 +58,10 @@ class Dababase {
     }
 
     // QUERYALL METHOD
-    queryAll(entry: object, callback: (err: Error, query: any[]) => Error & any[]) {
+    queryAll(entry: object, callback: (err: Error, query: any[]) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
+            if (err) throw err;
+
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
@@ -72,7 +71,7 @@ class Dababase {
     }
 
     // REMOVE METHOD
-    remove(entry: object) {
+    remove(entry: object, callback: (err: Error) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
@@ -84,13 +83,13 @@ class Dababase {
             obj = JSON.stringify(obj);
 
             fs.writeFile(this.source, obj, (err: Error) => {
-
+                if (err) throw err;
             });
         });
     }
 
     // REMOVEALL METHOD
-    removeAll(entries: object) {
+    removeAll(entries: object, callback: (err: Error) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
             if (err) throw err;
 
@@ -111,6 +110,39 @@ class Dababase {
             });
         });
     }
+
+    // UPDATE METHOD
+    update(from: object, to: object, callback: (err: Error) => void) {
+        fs.readFile(this.source, (err: Error, data: any) => {
+            if (err) throw err;
+
+            var obj = JSON.parse(data);
+
+            this.query(from, (err: Error, query: any) => {
+                query[Object.keys(from)[0]] = Object.values(to)[0];
+
+                var keys = Object.keys(from)[0];
+                var values = Object.values(from)[0];
+                var index = Array.from(obj).findIndex((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
+                obj[index] = query;
+
+                fs.writeFile(this.source, obj, (err: Error) => {
+                    if (err) throw err;
+
+                    callback(err);
+                });
+            });
+        });
+    }
+}
+
+function generate(length: number): string {
+    var chars = 'qwertyuiopasdfghjklzxcvbnm';
+    var generation = '';
+    for (var i = 0; i < length; i++) {
+        generation += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return generation;
 }
 
 module.exports = Dababase;
