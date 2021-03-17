@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const {generate} = require('./general');
 
 class Dababase {
     filepath: string;
@@ -134,15 +135,6 @@ class Dababase {
             });
         });
     }
-}
-
-function generate(length: number): string {
-    var chars = 'qwertyuiopasdfghjklzxcvbnm';
-    var generation = '';
-    for (var i = 0; i < length; i++) {
-        generation += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return generation;
 }
 
 module.exports = Dababase;

@@ -1,5 +1,6 @@
 declare const fs: any;
 declare const path: any;
+declare const generate: any;
 declare class Dababase {
     filepath: string;
     idUsage: boolean;
@@ -16,4 +17,3 @@ declare class Dababase {
     removeAll(entries: object, callback: (err: Error) => void): void;
     update(from: object, to: object, callback: (err: Error) => void): void;
 }
-declare function generate(length: number): string;
