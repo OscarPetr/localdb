@@ -142,10 +142,10 @@ class Dababase {
     }
 
     // MOVE METHOD
-    move(path: string, callback: (err: Error) => void) {
+    move(filepath: string, callback: (err: Error) => void) {
         var old = this.source;
 
-        this.filepath = `${path}/${this.filepath}`;
+        this.filepath = `${filepath}/${this.filepath}`;
         this.source = `${process.cwd()}/${this.filepath}`;
 
         fs.rename(old, this.source, (err: Error) => {
@@ -170,8 +170,8 @@ class Dababase {
     }
 
     // CLONE METHOD
-    clone(path: string, callback: (err: Error) => void) {
-        fs.copyFile(this.source, `${path}/${this.filepath}`, (err: Error) => {
+    clone(filepath: string, callback: (err: Error) => void) {
+        fs.copyFile(this.source, `${filepath}/${this.filepath}`, (err: Error) => {
             callback(err);
         });
     }

@@ -85,3 +85,9 @@ db.remove({key: value, ...});
 ### update(entries, callback)
 
 ### updateAll(entries, callback)
+
+### move(filepath, callback)
+
+### rename(filename, callback)
+
+### clone(filepath, callback)
