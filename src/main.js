@@ -33,8 +33,6 @@ class Dababase {
             obj.push(entries);
             obj = JSON.stringify(obj);
             fs.writeFile(this.filepath, obj, (err) => {
-                if (err)
-                    throw err;
                 callback(err);
             });
         });
@@ -42,28 +40,28 @@ class Dababase {
     // QUERY METHOD
     query(entry, callback) {
         fs.readFile(this.source, (err, data) => {
-            if (err)
-                throw err;
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
-            callback(err, Array.from(obj).find((object) => object.hasOwnProperty(keys) && object[keys] === values));
+            var filter = Array.from(obj).find((object) => object.hasOwnProperty(keys) && object[keys] === values);
+            callback(err, filter);
         });
     }
     // QUERYALL METHOD
     queryAll(entry, callback) {
         fs.readFile(this.source, (err, data) => {
-            if (err)
-                throw err;
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
-            callback(err, Array.from(obj).filter((object) => object.hasOwnProperty(keys) && object[keys] === values));
+            var filter = Array.from(obj).filter((object) => object.hasOwnProperty(keys) && object[keys] === values);
+            callback(err, filter);
         });
     }
     // REMOVE METHOD
     remove(entry, callback) {
         fs.readFile(this.source, (err, data) => {
+            if (err)
+                throw err;
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
@@ -71,8 +69,7 @@ class Dababase {
             obj.splice(index, index);
             obj = JSON.stringify(obj);
             fs.writeFile(this.source, obj, (err) => {
-                if (err)
-                    throw err;
+                callback(err);
             });
         });
     }
@@ -91,8 +88,7 @@ class Dababase {
             }
             obj = JSON.stringify(obj);
             fs.writeFile(this.source, obj, (err) => {
-                if (err)
-                    throw err;
+                callback(err);
             });
         });
     }
@@ -110,8 +106,6 @@ class Dababase {
                 obj[index] = query;
                 obj = JSON.stringify(obj);
                 fs.writeFile(this.source, obj, (err) => {
-                    if (err)
-                        throw err;
                     callback(err);
                 });
             });
@@ -126,8 +120,6 @@ class Dababase {
         this.filepath = `${filepath}/${this.filepath}`;
         this.source = `${process.cwd()}/${this.filepath}`;
         fs.rename(old, this.source, (err) => {
-            if (err)
-                throw err;
             callback(err);
         });
     }
@@ -137,8 +129,6 @@ class Dababase {
         this.filepath = filename;
         this.source = `${process.cwd()}/${this.filepath}`;
         fs.rename(old, this.source, (err) => {
-            if (err)
-                throw err;
             callback(err);
         });
     }

@@ -35,11 +35,9 @@ class Dababase {
 
             if (this.idUsage) entries = { ...entries, _id: generate(8) };
             obj.push(entries);
-
             obj = JSON.stringify(obj);
-            fs.writeFile(this.filepath, obj, (err: Error) => {
-                if (err) throw err;
 
+            fs.writeFile(this.filepath, obj, (err: Error) => {
                 callback(err);
             });
         });
@@ -48,42 +46,42 @@ class Dababase {
     // QUERY METHOD
     query(entry: object, callback: (err: Error, query: any) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
-            if (err) throw err;
-
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
+            var filter = Array.from(obj).find((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
 
-            callback(err, Array.from(obj).find((object: any) => object.hasOwnProperty(keys) && object[keys] === values))
+            callback(err, filter);
         });
     }
 
     // QUERYALL METHOD
     queryAll(entry: object, callback: (err: Error, query: any[]) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
-            if (err) throw err;
-
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
+            var filter = Array.from(obj).filter((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
 
-            callback(err, Array.from(obj).filter((object: any) => object.hasOwnProperty(keys) && object[keys] === values))
+            callback(err, filter);
         });
     }
 
     // REMOVE METHOD
     remove(entry: object, callback: (err: Error) => void) {
         fs.readFile(this.source, (err: Error, data: any) => {
+            if (err) throw err;
+
             var obj = JSON.parse(data);
             var keys = Object.keys(entry)[0];
             var values = Object.values(entry)[0];
-
             var index = Array.from(obj).findIndex((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
-            obj.splice(index, index);
 
+            obj.splice(index, index);
             obj = JSON.stringify(obj);
+
             fs.writeFile(this.source, obj, (err: Error) => {
-                if (err) throw err;
+                callback(err);
             });
         });
     }
@@ -96,8 +94,8 @@ class Dababase {
             var obj = JSON.parse(data);
             var keys = Object.keys(entries)[0];
             var values = Object.values(entries)[0];
-
             var indecies: number[] = [];
+
             obj.forEach((object: any, index: number) => object.hasOwnProperty(keys) && object[keys] === values ? indecies.push(index) : null);
 
             for (var i = 0; i < indecies.length; i++) {
@@ -105,8 +103,9 @@ class Dababase {
             }
 
             obj = JSON.stringify(obj);
+
             fs.writeFile(this.source, obj, (err: Error) => {
-                if (err) throw err;
+                callback(err);
             });
         });
     }
@@ -124,12 +123,11 @@ class Dababase {
                 var keys = Object.keys(from)[0];
                 var values = Object.values(from)[0];
                 var index = Array.from(obj).findIndex((object: any) => object.hasOwnProperty(keys) && object[keys] === values);
+
                 obj[index] = query;
-
                 obj = JSON.stringify(obj);
-                fs.writeFile(this.source, obj, (err: Error) => {
-                    if (err) throw err;
 
+                fs.writeFile(this.source, obj, (err: Error) => {
                     callback(err);
                 });
             });
@@ -149,8 +147,6 @@ class Dababase {
         this.source = `${process.cwd()}/${this.filepath}`;
 
         fs.rename(old, this.source, (err: Error) => {
-            if (err) throw err;
-
             callback(err);
         });
     }
@@ -163,8 +159,6 @@ class Dababase {
         this.source = `${process.cwd()}/${this.filepath}`;
 
         fs.rename(old, this.source, (err: Error) => {
-            if (err) throw err;
-
             callback(err);
         });
     }
@@ -195,15 +189,14 @@ class Dababase {
                     size = size / 1000000000000;
                     break;
             }
-            
+
             callback(err, size);
         });
     }
 
     // PROPS FUNCTION
     props(callback: (err: Error, data: object) => object) {
-        fs.stat(this.source, { bigint: false }, (err: Error, stats: {atime: string, birthtime: string, ctime: string, mtime: string}) => {
-
+        fs.stat(this.source, { bigint: false }, (err: Error, stats: { atime: string, birthtime: string, ctime: string, mtime: string }) => {
             var obj = {
                 birthTime: `${stats.birthtime}`,
                 lastAccess: `${stats.atime}`,
