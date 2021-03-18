@@ -177,23 +177,43 @@ class Dababase {
     }
 
     // SIZE FUNCTION
-    size(type: 'B' | 'KB' | 'MB' | 'GB' | 'TB', callback: (err: Error, size: number) => Error & number) {
-        fs.stat(this.source, { bigint: false }, (err: Error, stats: object) => {
+    size(type: 'B' | 'KB' | 'MB' | 'GB' | 'TB', callback: (err: Error, size: number) => number) {
+        fs.stat(this.source, { bigint: false }, (err: Error, stats: { size: number }) => {
             var size = stats.size;
-            switch(type) {
+
+            switch (type) {
                 case 'KB':
-                    size = size/1000;
+                    size = size / 1000;
                     break;
                 case 'MB':
-                    size = size/1000000;
+                    size = size / 1000000;
+                    break;
                 case 'GB':
-                    size = size/1000000000;
+                    size = size / 1000000000;
+                    break;
                 case 'TB':
-                    size = size/1000000000000;
+                    size = size / 1000000000000;
+                    break;
             }
+            
             callback(err, size);
+        });
+    }
+
+    // PROPS FUNCTION
+    props(callback: (err: Error, data: object) => object) {
+        fs.stat(this.source, { bigint: false }, (err: Error, stats: {atime: string, birthtime: string, ctime: string, mtime: string}) => {
+
+            var obj = {
+                birthTime: `${stats.birthtime}`,
+                lastAccess: `${stats.atime}`,
+                lastModified: `${stats.mtime}`,
+                lastInode: `${stats.ctime}`
+            }
+
+            callback(err, obj);
         });
     }
 }
 
-module.exports = Dababase;
+export = Dababase;

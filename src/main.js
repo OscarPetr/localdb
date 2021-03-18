@@ -158,12 +158,27 @@ class Dababase {
                     break;
                 case 'MB':
                     size = size / 1000000;
+                    break;
                 case 'GB':
                     size = size / 1000000000;
+                    break;
                 case 'TB':
                     size = size / 1000000000000;
+                    break;
             }
             callback(err, size);
+        });
+    }
+    // PROPS FUNCTION
+    props(callback) {
+        fs.stat(this.source, { bigint: false }, (err, stats) => {
+            var obj = {
+                birthTime: `${stats.birthtime}`,
+                lastAccess: `${stats.atime}`,
+                lastModified: `${stats.mtime}`,
+                lastInode: `${stats.ctime}`
+            };
+            callback(err, obj);
         });
     }
 }

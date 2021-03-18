@@ -91,3 +91,7 @@ db.remove({key: value, ...});
 ### rename(filename, callback)
 
 ### clone(filepath, callback)
+
+### size(type, callback)
+
+### props(callback)
